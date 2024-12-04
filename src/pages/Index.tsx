@@ -70,8 +70,8 @@ const Index = () => {
                   <Radar
                     name={selectedModel.name}
                     dataKey="value"
-                    stroke="#4A90E2"
-                    fill="#4A90E2"
+                    stroke="hsl(var(--primary))"
+                    fill="hsl(var(--primary))"
                     fillOpacity={0.6}
                   />
                   <Tooltip />
@@ -83,21 +83,31 @@ const Index = () => {
 
         {/* Metrics Detail */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(metricDescriptions).map(([key, metric]) => (
-            <Card
-              key={key}
-              className={`metric-card ${key.split('_')[0]}`}
-            >
-              <h3 className="text-xl font-semibold">{metric.title}</h3>
-              <p className="text-muted-foreground mt-2">{metric.description}</p>
-              <div className="mt-4">
-                <span className="text-3xl font-bold">
-                  {selectedModel.metrics[key as keyof typeof selectedModel.metrics].toFixed(1)}
-                </span>
-                <span className="text-muted-foreground">/100</span>
-              </div>
-            </Card>
-          ))}
+          {Object.entries(metricDescriptions).map(([key, metric]) => {
+            const value = selectedModel.metrics[key as keyof typeof selectedModel.metrics];
+            const getColorClass = (value: number) => {
+              if (value >= 80) return "metric-card impact";
+              if (value >= 60) return "metric-card emotional";
+              if (value >= 40) return "metric-card trust";
+              return "metric-card cultural";
+            };
+
+            return (
+              <Card
+                key={key}
+                className={`${getColorClass(value)} animate-float`}
+              >
+                <h3 className="text-xl font-semibold">{metric.title}</h3>
+                <p className="text-muted-foreground mt-2">{metric.description}</p>
+                <div className="mt-4">
+                  <span className="text-3xl font-bold">
+                    {value.toFixed(1)}
+                  </span>
+                  <span className="text-muted-foreground">/100</span>
+                </div>
+              </Card>
+            );
+          })}
         </div>
 
         {/* Methodology */}
