@@ -54,7 +54,35 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen;
+    background: linear-gradient(
+      to bottom right,
+      hsl(var(--background)),
+      hsl(var(--muted))
+    );
+  }
+}
+
+.moving-gradient {
+  background: linear-gradient(
+    -45deg,
+    hsl(var(--primary) / 0.2),
+    hsl(var(--secondary) / 0.2),
+    hsl(var(--accent) / 0.2)
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
